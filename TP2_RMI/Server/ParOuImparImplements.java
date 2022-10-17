@@ -12,14 +12,13 @@ public class ParOuImparImplements extends UnicastRemoteObject implements RMIInte
 
     public List<Cliente> clients = new ArrayList<Cliente>();
 
-    public void addClients(int team)
-            throws RemoteException, MalformedURLException, NotBoundException, UnknownHostException {
+    public void addClients(int team) throws RemoteException, MalformedURLException, NotBoundException, UnknownHostException {
         String ip = InetAddress.getLocalHost().getHostAddress();
         int numUsers = 0;
         boolean isPar = team == 0;
         while (numUsers < 2) {
             // Client client = (Client) Naming.lookup("rmi://localhost:12345/ParOuImpar");
-            clients.add(new Cliente(isPar));
+            clients.add(new Cliente(team));
 
             String msgSend = isPar ? "Voce joga como par" : "Voce joga como impar";
             enviarMensagem(msgSend);
@@ -28,12 +27,19 @@ public class ParOuImparImplements extends UnicastRemoteObject implements RMIInte
         }
     }
 
-    public int verifyWin() throws RemoteException {
+    public int[] verifyWin(int team) throws RemoteException {
         int sum = 0;
         for (Cliente cliente : clients) {
             sum += cliente.getNumber();
         }
-        return sum;
+
+        if (sum % 2 == 0 && team == 0 || sum % 2 != 0 && team == 1) {
+            int[] result = { 1, sum };
+            return result;
+        } else {
+            int[] result = { 0, sum };
+            return result;
+        }
     }
 
     public void setNumber(int i, int number) throws RemoteException {

@@ -10,21 +10,21 @@ public class Client {
         String ip = InetAddress.getLocalHost().getHostAddress();
         try {
             Scanner scanner = new Scanner(System.in);
-            RMIInterface chat = (RMIInterface) Naming.lookup("rmi://localhost:12345/ParOuImpar");
+            RMIInterface server = (RMIInterface) Naming.lookup("rmi://localhost:12345/ParOuImpar");
 
             System.out.println("Selecione 0 para par e 1 para ímpar: ");
             int team = scanner.nextInt();
-            chat.addClients(team);
+            server.addClients(team);
             System.out.println("Digite seu número: ");
             int number = scanner.nextInt();// recebe o digitado
-            chat.getClients().get(team).setNumber(number);
+            server.getClients().get(team).setNumber(number);
 
-            int result = chat.verifyWin();
+            int result[] = server.verifyWin(team);
 
-            if (result % 2 == 0 && team == 0 || result % 2 != 0 && team == 1) {
-                System.out.println("Parabéns! Você ganhou, resultado: " + result);
+            if(result[0]==1){
+                System.out.println("Parabéns! Você ganhou, resultado: " + result[1]);
             } else {
-                System.out.println("Que pena! Você perdeu, resultado: " + result);
+                System.out.println("Que pena! Você perdeu, resultado: " + result[1]);
             }
 
         } catch (Exception e) {

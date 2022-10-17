@@ -9,11 +9,8 @@ public class Server {
 
     public Server() throws RemoteException, MalformedURLException {
         try {
-            // RMIInterface chat = (RMIInterface) new ChatImplements();
-            // Naming.rebind(ChatImplements.getURI(), (Remote) chat);
-
             String ip = InetAddress.getLocalHost().getHostAddress();
-            Registry rgsty = LocateRegistry.createRegistry(12345);
+            LocateRegistry.createRegistry(12345);
             System.setProperty("java.rmi.server.hostname", ip);
             Naming.rebind("rmi://localhost:12345/ParOuImpar", new ParOuImparImplements());
             System.out.println("Server ready: " + ip);

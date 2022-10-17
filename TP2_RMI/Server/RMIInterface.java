@@ -15,5 +15,5 @@ public interface RMIInterface extends Remote {
 
     public void setNumber(int i, int number) throws RemoteException;
     
-    public int verifyWin() throws RemoteException;
+    public int[] verifyWin(int team) throws RemoteException;
 }
