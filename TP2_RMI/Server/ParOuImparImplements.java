@@ -1,7 +1,3 @@
-import java.net.MalformedURLException;
-import java.net.UnknownHostException;
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -15,29 +11,29 @@ public class ParOuImparImplements extends UnicastRemoteObject implements RMIInte
 
     public List<Cliente> clients = new ArrayList<Cliente>();
 
-    public String addClients(int team)
-            throws RemoteException, MalformedURLException, NotBoundException, UnknownHostException {
+    public String addClients(int team) throws RemoteException {
         try {
-            int numUsers = 0;
             boolean isPar = team == 0;
             clients.add(new Cliente(team));
 
             String msgSend = isPar ? "Voce joga como par" : "Voce joga como impar";
-            numUsers++;
             return msgSend;
         } catch (Exception ex) {
-            System.out.println("Erro: " + ex.getMessage());
-            return "";
+            return "Erro: " + ex.getMessage();
         }
     }
 
-    public void waitCustomers() {
-        while (clients.size() < 2);
+    public boolean waitClientPlay() throws RemoteException {
+        if (clients.size() == 2) {
+            if (clients.stream().filter(p -> p.getNumber() == 0).collect(Collectors.toList()).isEmpty()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public int[] verifyWin(int team) throws RemoteException {
         int sum = 0;
-        waitCustomers();
         try {
             for (Cliente cliente : clients) {
                 sum += cliente.getNumber();

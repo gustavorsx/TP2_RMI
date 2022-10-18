@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface RMIInterface extends Remote {
 
-    public void waitCustomers() throws RemoteException;
+    public boolean waitClientPlay() throws RemoteException;
 
     public String addClients(int team) throws RemoteException, MalformedURLException, NotBoundException, UnknownHostException;
 

@@ -1,7 +1,7 @@
 package Interface;
 public class Cliente {
     int team;
-    int number;
+    int number = 0;
 
     public Cliente(int team) {
         this.team = team;
