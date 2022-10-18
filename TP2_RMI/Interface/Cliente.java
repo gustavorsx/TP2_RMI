@@ -1,3 +1,4 @@
+package Interface;
 public class Cliente {
     int team;
     int number;
@@ -12,5 +13,9 @@ public class Cliente {
 
     public int getNumber() {
         return this.number;
+    }
+
+    public int getTeam() {
+        return this.team;
     }
 }

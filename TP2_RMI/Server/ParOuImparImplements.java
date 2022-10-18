@@ -1,4 +1,3 @@
-import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 import java.rmi.Naming;
@@ -7,30 +6,44 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import Interface.Cliente;
+import Interface.RMIInterface;
 
 public class ParOuImparImplements extends UnicastRemoteObject implements RMIInterface {
 
     public List<Cliente> clients = new ArrayList<Cliente>();
 
-    public void addClients(int team) throws RemoteException, MalformedURLException, NotBoundException, UnknownHostException {
-        String ip = InetAddress.getLocalHost().getHostAddress();
-        int numUsers = 0;
-        boolean isPar = team == 0;
-        while (numUsers < 2) {
-            // Client client = (Client) Naming.lookup("rmi://localhost:12345/ParOuImpar");
+    public String addClients(int team)
+            throws RemoteException, MalformedURLException, NotBoundException, UnknownHostException {
+        try {
+            int numUsers = 0;
+            boolean isPar = team == 0;
             clients.add(new Cliente(team));
 
             String msgSend = isPar ? "Voce joga como par" : "Voce joga como impar";
-            enviarMensagem(msgSend);
-            isPar = false;
             numUsers++;
+            return msgSend;
+        } catch (Exception ex) {
+            System.out.println("Erro: " + ex.getMessage());
+            return "";
         }
+    }
+
+    public void waitCustomers() {
+        while (clients.size() < 2);
     }
 
     public int[] verifyWin(int team) throws RemoteException {
         int sum = 0;
-        for (Cliente cliente : clients) {
-            sum += cliente.getNumber();
+        waitCustomers();
+        try {
+            for (Cliente cliente : clients) {
+                sum += cliente.getNumber();
+            }
+        } catch (Exception ex) {
+            System.out.println("Erro: " + ex.getMessage());
         }
 
         if (sum % 2 == 0 && team == 0 || sum % 2 != 0 && team == 1) {
@@ -43,7 +56,12 @@ public class ParOuImparImplements extends UnicastRemoteObject implements RMIInte
     }
 
     public void setNumber(int i, int number) throws RemoteException {
-        clients.get(i).setNumber(number);
+        try {
+            clients.stream().filter(p -> p.getTeam() == i).collect(Collectors.toList()).get(0).setNumber(number);
+            ;
+        } catch (Exception ex) {
+            System.out.println("Erro: " + ex.getMessage());
+        }
     }
 
     public List<Cliente> getClients() throws RemoteException {
@@ -52,9 +70,5 @@ public class ParOuImparImplements extends UnicastRemoteObject implements RMIInte
 
     public ParOuImparImplements() throws RemoteException {
         super();
-    }
-
-    public void enviarMensagem(String mensagem) throws RemoteException {
-        System.out.println(mensagem);
     }
 }
