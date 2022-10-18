@@ -12,7 +12,7 @@ public interface RMIInterface extends Remote {
 
     public String addClients(int team) throws RemoteException, MalformedURLException, NotBoundException, UnknownHostException;
 
-    public List<Cliente> getClients() throws RemoteException;
+    public List<User> getClients() throws RemoteException;
 
     public void setNumber(int i, int number) throws RemoteException;
     

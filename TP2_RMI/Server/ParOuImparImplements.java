@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import Interface.Cliente;
+import Interface.User;
 import Interface.RMIInterface;
 
 public class ParOuImparImplements extends UnicastRemoteObject implements RMIInterface {
 
-    public List<Cliente> clients = new ArrayList<Cliente>();
+    public List<User> clients = new ArrayList<User>();
 
     public String addClients(int team) throws RemoteException {
         try {
             boolean isPar = team == 0;
-            clients.add(new Cliente(team));
+            clients.add(new User(team));
 
             String msgSend = isPar ? "Voce joga como par" : "Voce joga como impar";
             return msgSend;
@@ -35,7 +35,7 @@ public class ParOuImparImplements extends UnicastRemoteObject implements RMIInte
     public int[] verifyWin(int team) throws RemoteException {
         int sum = 0;
         try {
-            for (Cliente cliente : clients) {
+            for (User cliente : clients) {
                 sum += cliente.getNumber();
             }
         } catch (Exception ex) {
@@ -60,7 +60,7 @@ public class ParOuImparImplements extends UnicastRemoteObject implements RMIInte
         }
     }
 
-    public List<Cliente> getClients() throws RemoteException {
+    public List<User> getClients() throws RemoteException {
         return clients;
     }
 

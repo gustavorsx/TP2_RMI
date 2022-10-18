@@ -1,9 +1,9 @@
 package Interface;
-public class Cliente {
+public class User {
     int team;
     int number = 0;
 
-    public Cliente(int team) {
+    public User(int team) {
         this.team = team;
     }
 
