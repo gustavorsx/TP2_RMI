@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import Interface.User;
 import Interface.RMIInterface;
 
 public class ParOuImparImplements extends UnicastRemoteObject implements RMIInterface {
@@ -58,10 +57,6 @@ public class ParOuImparImplements extends UnicastRemoteObject implements RMIInte
         } catch (Exception ex) {
             System.out.println("Erro: " + ex.getMessage());
         }
-    }
-
-    public List<User> getClients() throws RemoteException {
-        return clients;
     }
 
     public ParOuImparImplements() throws RemoteException {
